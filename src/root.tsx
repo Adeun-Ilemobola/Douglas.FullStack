@@ -1,4 +1,4 @@
-import React , {useState , useEffect} from 'react'
+import  {useState } from 'react'
 import Input from './component/Input'
 import Button from './component/Button'
 import ThemeToggle from './component/ThemeToggle'
