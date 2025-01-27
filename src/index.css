@@ -1,143 +1,160 @@
+/* ------------------------ Global Variables --------------------------- */
+
 :root[data-theme="light"] {
-  --text-50: rgb(241, 244, 241);
-  --text-100: rgb(227, 232, 227);
-  --text-200: rgb(198, 210, 198);
-  --text-300: rgb(170, 187, 170);
-  --text-400: rgb(142, 164, 142);
-  --text-500: rgb(113, 142, 113);
-  --text-600: rgb(91, 113, 91);
-  --text-700: rgb(68, 85, 68);
-  --text-800: rgb(45, 57, 45);
-  --text-900: rgb(23, 28, 23);
-  --text-950: rgb(11, 14, 11);
+  --text-50: rgb(241, 242, 243);
+  --text-100: rgb(228, 230, 231);
+  --text-200: rgb(201, 204, 207);
+  --text-300: rgb(174, 179, 183);
+  --text-400: rgb(147, 153, 159);
+  --text-500: rgb(120, 128, 135);
+  --text-600: rgb(96, 102, 108);
+  --text-700: rgb(72, 77, 81);
+  --text-800: rgb(48, 51, 54);
+  --text-900: rgb(24, 26, 27);
+  --text-950: rgb(12, 13, 14);
 
-  --background-50: rgb(240, 245, 240);
-  --background-100: rgb(224, 235, 224);
-  --background-200: rgb(194, 214, 194);
-  --background-300: rgb(163, 194, 163);
-  --background-400: rgb(133, 173, 133);
-  --background-500: rgb(102, 153, 102);
-  --background-600: rgb(82, 122, 82);
-  --background-700: rgb(61, 92, 61);
-  --background-800: rgb(41, 61, 41);
-  --background-900: rgb(20, 31, 20);
-  --background-950: rgb(10, 15, 10);
+  --background-50: rgb(241, 242, 244);
+  --background-100: rgb(227, 230, 232);
+  --background-200: rgb(199, 204, 209);
+  --background-300: rgb(171, 179, 186);
+  --background-400: rgb(143, 153, 163);
+  --background-500: rgb(115, 127, 140);
+  --background-600: rgb(92, 102, 112);
+  --background-700: rgb(69, 76, 84);
+  --background-800: rgb(46, 51, 56);
+  --background-900: rgb(23, 25, 28);
+  --background-950: rgb(11, 13, 14);
 
-  --primary-50: rgb(241, 244, 241);
-  --primary-100: rgb(226, 233, 227);
-  --primary-200: rgb(198, 210, 199);
-  --primary-300: rgb(169, 188, 171);
-  --primary-400: rgb(141, 165, 142);
-  --primary-500: rgb(112, 143, 114);
-  --primary-600: rgb(90, 114, 91);
-  --primary-700: rgb(67, 86, 69);
-  --primary-800: rgb(45, 57, 46);
-  --primary-900: rgb(22, 29, 23);
-  --primary-950: rgb(11, 14, 11);
+  --primary-50: rgb(241, 242, 244);
+  --primary-100: rgb(226, 230, 233);
+  --primary-200: rgb(197, 205, 211);
+  --primary-300: rgb(169, 179, 188);
+  --primary-400: rgb(140, 154, 166);
+  --primary-500: rgb(111, 129, 144);
+  --primary-600: rgb(89, 103, 115);
+  --primary-700: rgb(67, 77, 86);
+  --primary-800: rgb(44, 52, 58);
+  --primary-900: rgb(22, 26, 29);
+  --primary-950: rgb(11, 13, 14);
 
-  --secondary-50: rgb(241, 244, 244);
-  --secondary-100: rgb(227, 232, 232);
-  --secondary-200: rgb(198, 210, 210);
-  --secondary-300: rgb(170, 187, 187);
-  --secondary-400: rgb(142, 164, 164);
-  --secondary-500: rgb(113, 142, 142);
-  --secondary-600: rgb(91, 113, 113);
-  --secondary-700: rgb(68, 85, 85);
-  --secondary-800: rgb(45, 57, 57);
-  --secondary-900: rgb(23, 28, 28);
-  --secondary-950: rgb(11, 14, 14);
+  --secondary-50: rgb(240, 242, 244);
+  --secondary-100: rgb(226, 230, 233);
+  --secondary-200: rgb(196, 205, 212);
+  --secondary-300: rgb(167, 180, 190);
+  --secondary-400: rgb(138, 155, 168);
+  --secondary-500: rgb(108, 129, 147);
+  --secondary-600: rgb(87, 104, 117);
+  --secondary-700: rgb(65, 78, 88);
+  --secondary-800: rgb(43, 52, 59);
+  --secondary-900: rgb(22, 26, 29);
+  --secondary-950: rgb(11, 13, 15);
 
-  --accent-50: rgb(241, 242, 244);
-  --accent-100: rgb(227, 230, 232);
-  --accent-200: rgb(198, 205, 210);
-  --accent-300: rgb(170, 180, 187);
-  --accent-400: rgb(142, 154, 164);
-  --accent-500: rgb(113, 129, 142);
-  --accent-500-a: rgba(113, 129, 142 ,.6);
-  --accent-600: rgb(91, 103, 113);
-  --accent-700: rgb(68, 78, 85);
-  --accent-800: rgb(45, 52, 57);
-  --accent-900: rgb(23, 26, 28);
-  --accent-950: rgb(11, 13, 14);
+  --accent-50: rgb(240, 243, 245);
+  --accent-100: rgb(224, 230, 235);
+  --accent-200: rgb(194, 206, 214);
+  --accent-300: rgb(163, 181, 194);
+  --accent-400: rgb(133, 156, 173);
+  --accent-500: rgb(102, 132, 153);
+  --accent-500-a:rgba(102, 132, 153 ,.6);
+  --accent-600: rgb(82, 105, 122);
+  --accent-700: rgb(61, 79, 92);
+  --accent-800: rgb(41, 53, 61);
+  --accent-900: rgb(20, 26, 31);
+  --accent-950: rgb(10, 13, 15);
 
 }
 :root[data-theme="dark"] {
-  --text-50: rgb(11, 14, 11);
-  --text-100: rgb(23, 28, 23);
-  --text-200: rgb(45, 57, 45);
-  --text-300: rgb(68, 85, 68);
-  --text-400: rgb(91, 113, 91);
-  --text-500: rgb(113, 142, 113);
-  --text-600: rgb(142, 164, 142);
-  --text-700: rgb(170, 187, 170);
-  --text-800: rgb(198, 210, 198);
-  --text-900: rgb(227, 232, 227);
-  --text-950: rgb(241, 244, 241);
+  --text-50: rgb(12, 13, 14);
+  --text-100: rgb(24, 26, 27);
+  --text-200: rgb(48, 51, 54);
+  --text-300: rgb(72, 77, 81);
+  --text-400: rgb(96, 102, 108);
+  --text-500: rgb(120, 128, 135);
+  --text-600: rgb(147, 153, 159);
+  --text-700: rgb(174, 179, 183);
+  --text-800: rgb(201, 204, 207);
+  --text-900: rgb(228, 230, 231);
+  --text-950: rgb(241, 242, 243);
 
-  --background-50: rgb(10, 15, 10);
-  --background-100: rgb(20, 31, 20);
-  --background-200: rgb(41, 61, 41);
-  --background-300: rgb(61, 92, 61);
-  --background-400: rgb(82, 122, 82);
-  --background-500: rgb(102, 153, 102);
-  --background-600: rgb(133, 173, 133);
-  --background-700: rgb(163, 194, 163);
-  --background-800: rgb(194, 214, 194);
-  --background-900: rgb(224, 235, 224);
-  --background-950: rgb(240, 245, 240);
+  --background-50: rgb(11, 13, 14);
+  --background-100: rgb(23, 25, 28);
+  --background-200: rgb(46, 51, 56);
+  --background-300: rgb(69, 76, 84);
+  --background-400: rgb(92, 102, 112);
+  --background-500: rgb(115, 127, 140);
+  --background-600: rgb(143, 153, 163);
+  --background-700: rgb(171, 179, 186);
+  --background-800: rgb(199, 204, 209);
+  --background-900: rgb(227, 230, 232);
+  --background-950: rgb(241, 242, 244);
 
-  --primary-50: rgb(11, 14, 11);
-  --primary-100: rgb(22, 29, 23);
-  --primary-200: rgb(45, 57, 46);
-  --primary-300: rgb(67, 86, 69);
-  --primary-400: rgb(90, 114, 91);
-  --primary-500: rgb(112, 143, 114);
-  --primary-600: rgb(141, 165, 142);
-  --primary-700: rgb(169, 188, 171);
-  --primary-800: rgb(198, 210, 199);
-  --primary-900: rgb(226, 233, 227);
-  --primary-950: rgb(241, 244, 241);
+  --primary-50: rgb(11, 13, 14);
+  --primary-100: rgb(22, 26, 29);
+  --primary-200: rgb(44, 52, 58);
+  --primary-300: rgb(67, 77, 86);
+  --primary-400: rgb(89, 103, 115);
+  --primary-500: rgb(111, 129, 144);
+  --primary-600: rgb(140, 154, 166);
+  --primary-700: rgb(169, 179, 188);
+  --primary-800: rgb(197, 205, 211);
+  --primary-900: rgb(226, 230, 233);
+  --primary-950: rgb(241, 242, 244);
 
-  --secondary-50: rgb(11, 14, 14);
-  --secondary-100: rgb(23, 28, 28);
-  --secondary-200: rgb(45, 57, 57);
-  --secondary-300: rgb(68, 85, 85);
-  --secondary-400: rgb(91, 113, 113);
-  --secondary-500: rgb(113, 142, 142);
-  --secondary-600: rgb(142, 164, 164);
-  --secondary-700: rgb(170, 187, 187);
-  --secondary-800: rgb(198, 210, 210);
-  --secondary-900: rgb(227, 232, 232);
-  --secondary-950: rgb(241, 244, 244);
+  --secondary-50: rgb(11, 13, 15);
+  --secondary-100: rgb(22, 26, 29);
+  --secondary-200: rgb(43, 52, 59);
+  --secondary-300: rgb(65, 78, 88);
+  --secondary-400: rgb(87, 104, 117);
+  --secondary-500: rgb(108, 129, 147);
+  --secondary-600: rgb(138, 155, 168);
+  --secondary-700: rgb(167, 180, 190);
+  --secondary-800: rgb(196, 205, 212);
+  --secondary-900: rgb(226, 230, 233);
+  --secondary-950: rgb(240, 242, 244);
 
-  --accent-50: rgb(11, 13, 14);
-  --accent-100: rgb(23, 26, 28);
-  --accent-200: rgb(45, 52, 57);
-  --accent-300: rgb(68, 78, 85);
-  --accent-400: rgb(91, 103, 113);
-  --accent-500: rgb(113, 129, 142);
-  --accent-500-a: rgba(113, 129, 142 ,.6);
-
-  --accent-600: rgb(142, 154, 164);
-  --accent-700: rgb(170, 180, 187);
-  --accent-800: rgb(198, 205, 210);
-  --accent-900: rgb(227, 230, 232);
-  --accent-950: rgb(241, 242, 244);
+  --accent-50: rgb(10, 13, 15);
+  --accent-100: rgb(20, 26, 31);
+  --accent-200: rgb(41, 53, 61);
+  --accent-300: rgb(61, 79, 92);
+  --accent-400: rgb(82, 105, 122);
+  --accent-500: rgb(102, 132, 153);
+  --accent-500-a:rgba(102, 132, 153 , .6);
+  --accent-600: rgb(133, 156, 173);
+  --accent-700: rgb(163, 181, 194);
+  --accent-800: rgb(194, 206, 214);
+  --accent-900: rgb(224, 230, 235);
+  --accent-950: rgb(240, 243, 245);
 
 }
 
 
+:root {
+  --radius-sm: 3px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 300ms ease-in-out;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
 
+
+
+/* ------------------------ Base Styles --------------------------- */
 
 
 *{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 
 body{
   height: 100vh;
+  background-color: var(--background-50);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.5;
+
 }
 
 
@@ -186,27 +203,31 @@ input[type="text"]{
   width: 200px;
 
   font-size: 18px;
-  padding: 3px 6px 2.5px;
+  padding: 0.5rem 0.75rem;
   border-radius: 4px;
 
-  background-color: var(--background-300);
-  color: var(--text-800);
-  border: 1px solid var(--accent-800);
-  transition: background-color 450ms ease-in-out ;
+  background-color: var(--background-200);
+  color: var(--text-900);
+  border: 1px solid var(--accent-300);
+  transition:  var(--transition);
+
 }
 
 input[type="text"]:hover{
-  background-color: var(--background-400);
+  background-color: var(--background-300);
+  border-color: var(--accent-400);
 }
 
 
 input[type="text"]:focus{
-  background-color: var(--background-400);
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-500-a);
 }
 .inputContainer{
   display: flex;
   flex-direction: column;
-  gap: 5px;
+   gap: 0.2rem;
 
 
 }
@@ -217,16 +238,16 @@ input[type="text"]:focus{
 button{
   font-size: 18px;
   padding: 3px 6px;
-  border-radius: 3px;
-
+  border-radius: var(--radius-sm);
   background-color: var(--primary-500);
-  color: var(--text-900);
+  color: var(--text-50);
   border: none;
   transition: background-color 450ms ease-in-out ;
 }
 
 button:hover{
   background-color: var(--primary-600);
+  
 }
 
 
@@ -247,6 +268,8 @@ button:hover{
   /* Future animation */
   transition: opacity 450ms ease-in-out;
   Pointer-events: none;
+  display: grid;
+  place-items: center;
 }
 
 .POPOVERBACKDROP--visible {
@@ -255,22 +278,15 @@ button:hover{
 }
 
 .POPOVER{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   z-index: 1001;
   background-color: var(--background-300);
   color: var(--text-900);
   border: 1px solid var(--accent-800);
   padding: 10px;
   border-radius: 3px;
-  min-width: 350px;
-  max-width: 500px;
-  /* display: flex;
-  flex-direction: column;
-  gap: 5px; */
-  /* Future animation */
+  width: min(90vw, 800px);
+  max-height: 650px;
   transition: transform 450ms ease-in-out;
   opacity: 0;
   pointer-events: none;
@@ -281,3 +297,116 @@ button:hover{
   pointer-events: auto; 
 }
 
+
+
+
+
+
+
+
+
+/* -------------------- Default input file---------------------- */
+
+
+.INPUTFILE{
+  display: block;
+  color: var(--text-100);
+  border: 2px dashed var(--secondary-400);
+  padding: .5rem;
+  border-radius: 5px;
+  max-width: 600px;
+  min-width: 250px;
+  min-height: 300px;
+  overflow-x: scroll;
+  transition: all 300ms ease-in-out;
+
+}
+.INPUTFILE--DriveOver{
+  border-color: var(--primary-500);
+  background-color: var(--primary-500-a);
+
+}
+
+
+.file-table-container {
+  display: flex;
+  overflow-x: auto; 
+  max-width: 100%; 
+  
+}
+
+/* Table Styling */
+.file-table {
+  width: 100%;
+  table-layout: fixed; /* Ensures consistent column widths */
+}
+
+
+.file-table td {
+  text-align: left;
+  padding: 7px 11px;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  border: 1px solid var(--accent-300);
+  border-radius: 2px;
+
+  
+
+  
+}
+.file-table tr:hover {
+  background-color: var(--background-200);
+}
+
+.file-table tr{
+  color: var(--text-700);
+  background-color: var(--background-100);
+  transition: background-color var(--transition);
+}
+
+
+
+
+.base64-cell {
+  max-width: 300px; 
+  overflow-x: auto; 
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  
+}
+
+/* ----------------- Sidebar------- */
+
+.Collection{
+  color: var(--text-700);
+  background-color: var(--background-100);
+  padding: 7px 11px;
+  text-align: left;
+  border-radius: 2px;
+}
+
+.Collection:hover {
+  background-color: var(--background-200);
+}
+
+/* ------------------------ Scrollbars --------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-500);
+  border-radius: var(--radius-lg);
+}
+/* ------------------------ Utility Classes --------------------------- */
+.gap-sm { gap: 0.5rem; }
+.gap-md { gap: 1rem; }
+.gap-lg { gap: 1.5rem; }
+
+.p-sm { padding: 0.5rem; }
+.p-md { padding: 1rem; }
+.p-lg { padding: 1.5rem; }

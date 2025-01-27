@@ -1,12 +1,20 @@
 import  {useState } from 'react'
-import Input from './component/Input'
-import Button from './component/Button'
-import ThemeToggle from './component/ThemeToggle'
-import DialogPopover from './component/DialogPopover'
+import Input from './component/UI/Input'
+import Button from './component/UI/Button'
+import DialogPopover from './component/UI/DialogPopover'
+import FileInput from './component/UI/FileInput'
+import ThemeToggle from './component/UI/ThemeToggle'
+
+type file = {
+     name: string,
+     bs64: string
+}
 
 export default function Root() {
-     const [openDialog, setOpenDialog] = useState(false)
+     const  [openDialog ,setOpenDialog ] = useState(false)
+     const [ fileList , setFileList] = useState<file[]| []>([])
 
+    
      
 
      return (
@@ -22,8 +30,13 @@ export default function Root() {
                </header>
                <main className='MAIN'>
                <h1>MAIN</h1>
-               <Input showLabel={true} LabelI='ggggg'/>
-               <Button onClick={()=>setOpenDialog(pre=>!pre)}> {openDialog ? "Close": "Open"}</Button>
+               <Input showLabel={true} LabelI='name' placeholder='name'/>
+               <Button  onClick={()=>setOpenDialog(pre=>!pre)}> {openDialog ? "Close": "Open"}</Button>
+
+
+
+               <FileInput id='dfdfdfdf' setFileList={setFileList} fileList={fileList} />
+
 
 
                </main>
