@@ -4,8 +4,6 @@ import  {  InputHTMLAttributes } from 'react'
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
      showLabel: boolean,
      LabelI: string
-
-
 }
 export default function Input({ showLabel, LabelI, ...other }: InputProps) {
      return (
