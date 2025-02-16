@@ -1,50 +1,79 @@
-# React + TypeScript + Vite
+# NoteMap 🗒️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**NoteMap** is a note-taking application that allows users to create folders and store multiple notes within them. It offers **real-time synchronization**, **secure user authentication**, and **intuitive organization**, making it a powerful tool for structured note management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **User Authentication & Sessions** – Secure login with session management.
+- **Folder & Note Management** – Create, edit, and organize notes into folders.
+- **Real-Time Updates** – All changes sync instantly with the MongoDB database.
+- **User Profile Management** – Update user details securely.
+- **Seamless UI Updates** – Changes are reflected instantly on the interface.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+## 🛠️ How It Works
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 1️⃣ User Authentication & Sessions
+- Users log in via browser sessions.
+- The session maintains authentication and persists user state.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2️⃣ Folder Creation
+- Users create a new folder.
+- This triggers:
+    - A **MongoDB update** with folder details.
+    - Instant UI reflection.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 3️⃣ Note Creation
+- Users create new notes (inside a folder or standalone).
+- This triggers:
+    - A **MongoDB update** storing the note data.
+    - UI refresh to display the new note.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 4️⃣ Note Modification
+- Users edit note titles, content, or metadata.
+- The system:
+    - Updates the **MongoDB database** immediately.
+    - Reflects changes in real-time.
+
+### 5️⃣ User Information Management
+- Users update personal details (e.g., name, password).
+- This triggers:
+    - An **immediate database update**.
+    - Updates to stored session credentials.
+
+### 6️⃣ Real-Time Synchronization
+- All changes (**folders, notes, user info**) are pushed to the database instantly.
+- The UI auto-refreshes to ensure data accuracy.
+
+### 7️⃣ Session Handling
+- **Active session** → Users can manage folders, notes, and profiles.
+- **Session expiration/logout** → Secure logout procedures are triggered.
+
+---
+
+## 🔮 Future Enhancements
+
+✅ **Search & Tagging** – Find notes faster with search and keyword tagging.  
+✅ **Collaboration Features** – Enable real-time sharing & editing of folders and notes.
+
+---
+
+## 🏗️ Tech Stack
+
+- **Frontend**: React (Next.js)
+- **Backend**: Node.js (Express.js)
+- **Database**: MongoDB
+- **Authentication**: Session-based auth
+- **State Management**: Real-time event updates
+
+---
+
+## 🏁 Getting Started
+
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/your-username/notemap.git
+   cd notemap

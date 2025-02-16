@@ -9,11 +9,16 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
+
+
+    /* ✅ Output JavaScript files in js-src folder */
+    "outDir": "js-src",
+    "jsx": "preserve", // ✅ Keep JSX unchanged
+    "removeComments": false, // ✅ Keep comments for readability
+    "noEmit": false ,// ✅ Ensure TypeScript compiles files
+    //"allowImportingTsExtensions": true,
 
     /* Linting */
     "strict": true,

@@ -5,7 +5,7 @@ export function minMax(min: number, max: number): number {
 }
 
 
-export function idGen():string {
+export  function idGen():string {
     const atoz19 = "zxcvbnmlkjhgfdsapoiuytrewqQWERTYUIOPLKJHGFDSAZXCVBNM1234567890!"
     let segment = 0;
     let id  = "";
@@ -22,3 +22,54 @@ export function idGen():string {
     return id;
 
 }
+
+
+export async function getData(path:string):Promise<any> {
+    try{
+        const response = await fetch(path, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`)
+            return { error:" something went wrong. Please check your info." };
+
+        }
+
+        return await response.json();
+
+    }catch(error){
+        console.error("Error fetching data:", error);
+        return { error: 'Error fetching data' }
+    }
+}
+
+
+
+
+export async function postData(path:string , data:object):Promise<any> {
+    try{
+        const response = await fetch(path, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`)
+            return { error:" something went wrong. Please check your info." };
+        }
+
+        return await response.json();
+
+    }catch(error){
+        console.error("Error fetching data:", error);
+        return { error: 'Error fetching data' }
+    }
+}
+
