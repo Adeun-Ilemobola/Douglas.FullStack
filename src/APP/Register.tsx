@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {useSession} from "../Hook/useSession.ts";
-import Input from "../component/UI/Input.tsx";
-import Button from "../component/UI/Button.tsx";
+import {useSession} from "../Hook/useSession";
+import Input from "../component/UI/Input";
+import Button from "../component/UI/Button";
 import axios from "axios";
 
 function Register() {
@@ -72,7 +72,7 @@ function Register() {
                     if (loginInfo.username && loginInfo.password && loginInfo.password2  && loginInfo.email && loginInfo.password2) {
                         console.log(loginInfo)
                         setSignStart(true)
-                         await axios.post("http://localhost:3000/api/Register", {
+                         await axios.post("https://nodevap.onrender.com/api/Register", {
                              username: loginInfo.username.trim(),
                              password: loginInfo.password.trim(),
                              email: loginInfo.email.trim(),

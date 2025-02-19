@@ -1,7 +1,7 @@
 import {useState, useEffect, useCallback} from "react";
 import {useLocation, useNavigate,} from 'react-router-dom';
 import axios from "axios";
-import {Session} from "../TYPE.ts";
+import {Session} from "../TYPE";
 
 
 export function useSession() {
@@ -33,7 +33,7 @@ export function useSession() {
 
 
             const response = await axios.post(
-                "http://localhost:3000/api/Session",
+                "https://nodevap.onrender.com/api/Session",
                 getActiveSession
             );
             const {data, error} = response.data;
@@ -82,7 +82,7 @@ export function useSession() {
     async function Login({username, password}: { username: string, password: string }) {
         setIsLoading(true)
         try {
-            const response = await axios.post("http://localhost:3000/api/login", {
+            const response = await axios.post("https://nodevap.onrender.com/api/login", {
                 username: username.trim(),
                 password: password.trim(),
             })

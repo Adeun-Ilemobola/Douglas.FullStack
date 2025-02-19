@@ -5,9 +5,11 @@ import {useSession} from "../Hook/useSession.ts";
 import Button from "../component/UI/Button.tsx";
 import DialogPopover from "../component/UI/DialogPopover";
 import axios from "axios";
+import Input from "../component/UI/Input";
 
 
 type Note = {
+    name: string,
     id: string;
     text: string;
     folderID: string;
@@ -20,158 +22,144 @@ type Folder = {
 
 }
 
-type changeDispatcher = {
-    changeOcr: boolean,
-    userNote: { method: "add" | "delete" | "update", data: INote }[],
-    userFolder: { method: "add" | "delete" | "update", data: IFolder }[],
-}
+// type changeDispatcher = {
+//     changeOcr: boolean,
+//     userNote: { method: "add" | "delete" | "update", data: Note }[],
+//     userFolder: { method: "add" | "delete" | "update", data: Folder }[],
+// }
 
+
+// API access == https://nodevap.onrender.com/api/
 
 export default function Home() {
     const {isLoading, session} = useSession();
-    const [openDialog, setOpenDialog] = useState(false)
-    const [notes, setNotes] = useState<Note[]>([]);
-    const [mounted, setMounted] = useState(false);
-    const [folders, setFolders] = useState<Folder[]>([]);
-    const [chanege, setChanege] = useState<changeDispatcher>({
-        changeOcr: false,
-        userFolder: [],
-        userNote: [],
-
-    });
-    const [currentNote, setCurrentNote] = useState<Note | null>(null);
-    const [newItem, setnewItem] = useState<{ note: Note | null, folders: Folder | null  , SelectedFolder:string |null}>({
-        note: null,
-        folders: null,
-        SelectedFolder: null,
+    const [openDialogFolder, setOpenDialogFolder] = useState(false)
+    const [Notes, setNotes] = useState<Note[]>([]);
+    const [Folders, setFolders] = useState<Folder[]>([]);
+    const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+    const [newItem, setNewItem] = useState<{ name: string, selectedFolder: string | null }>({
+        name: "",
+        selectedFolder: null,
     });
 
-    useEffect(() => {
-        if (!mounted) {
-            //    get the user data from the bd
-            //     add the user note and folder to the state
-            //   add the correspondent file to the folder
-
-
-            //  set
-            setMounted(true);
-
-        } else {
-            // if any new item has been added by comparing it
-            if (chanege.changeOcr) {
-
-                setChanege(pre => ({...pre, changeOcr: false, chanegeItem: []}));
-
+    const Refresh = useCallback(async () => {
+        try {
+            if (session) {
+                const {data} = await axios.post("https://nodevap.onrender.com/api/userCollection", {userID: session.user.id})
+                const {notesA, folderA} = data
+                setNotes(notesA);
+                setFolders(folderA);
 
             }
-            //     send a dispatcher to the therapist with an array of object, one for the note and one for the folder
 
+
+        } catch (err) {
+            console.log(err)
         }
 
+    }, [newItem , session])
 
-    }, [chanege.changeOcr]);
+
+    function handleIput(value: string) {
+        setNewItem(prev => ({
+            ...prev,
+            name: value,
+        }))
+
+    }
 
 
-    const updateNote = async () => {
+    const AddNode = useCallback(async () => {
         try {
+            if (!session) return;
+            if (!newItem.selectedFolder) {
+                alert(" please select a folder or collection you want to create this note in")
+                return;
 
-            if (chanege.changeOcr && session) {
-                const response = await axios.post("http://localhost:3000/api/UpdateUserData", {
+            }
+
+            const {data} = await axios.post("https://nodevap.onrender.com/api/userNote",
+                {
+                    method:"add",
                     userID: session.user.id,
-                    userNote: chanege.userNote,
-                    userFolder: chanege.userFolder,
+                    name: newItem.name,
+                    foderID: newItem.selectedFolder
+                }
+            )
+            const {error} = data;
+            if (error) {
+                alert(error);
+                return;
+            }
+            Refresh()
 
-                })
-                const {data, error} = response.data;
-                if (data) {
-                    setNotes(data.notes);
-                    setFolders(data.folders);
 
-                    setChanege(per => ({...per, chanegeItem: [], changeOcr: false}));
+        } catch (err) {
+            console.log(err)
+        }
+    }, [newItem , session])
 
+
+
+    const AddFoder = useCallback(async () => {
+        try {
+            if (!session) return;
+            const {data} = await axios.post("https://nodevap.onrender.com/api/userFolder",
+                {
+                    method:"add",
+                    userID: session.user.id,
+                    name: newItem.name,
 
                 }
+            )
+            const {error} = data;
+            if (error) {
+                alert(error);
+                return;
             }
+            Refresh()
 
-        } catch (e) {
-            console.log(e)
 
+        } catch (err) {
+            console.log(err)
         }
-
-    }
-
-    function addNote(idFolder: string) {
-        if (newItem.note && session) {
-            const note = newItem.note;
-            setChanege(pre => ({
-                ...pre,
-                changeOcr: true,
-                userNote: [...pre.userNote, {
-                    method: "add", data: {
-                        userID: session.user.id,
-                        text: note.text,
-                        title: newItem.note,
-                        folderID: idFolder,
-                    }
-                }]
-            }))
-
-            setnewItem(pre => ({
-                ...pre,
-                note: null,
-                changeOcr: false,
-            }))
+    }, [newItem , session])
 
 
-        }
-
-    }
 
 
-    function addFolder() {
-        if (newItem.folders) {
-            const folder = newItem.folders;
-            setChanege(pre => ({
-                ...pre,
-                changeOcr: true,
-                userFolder: [...pre.userFolder, {method: "add", data: folder}]
-            }))
-
-            setnewItem(pre => ({
-                ...pre,
-                folders: null,
-                changeOcr: false,
-            }))
-
-
-        }
-
-    }
-
-
-    function selectNote(id: string) {
-        const foundNote = notes.find(note => note.id === id)
-        if (foundNote) {
-            setCurrentNote(foundNote)
-        }
-
-    }
 
 
     return (
         <div className='ROOTCONPONENT'>
-            <DialogPopover isOpen={openDialog} onClose={() => setOpenDialog(false)}>
-                <h1>Dialog</h1>
-                <p>This is a dialog</p>
+            <DialogPopover isOpen={openDialogFolder} onClose={() => setOpenDialogFolder(false)}>
+                <Input showLabel={true} LabelI={"name"} value={newItem.name}
+                       onChange={(e) => handleIput(e.target.value)}/>
+                <Button onClick={() => {AddFoder()}}>
+                    Create folder
+                </Button>
             </DialogPopover>
-            <Header userDate={{name: "sdsd", id: "881094381-9h9fdfud9f-kjbdfsj", img: undefined}}/>
+
+
+            <Header userDate={{
+                name: session ? session.user.username : "",
+                id: session ? session.user.id : "",
+                img: undefined
+            }}/>
             <main className='MAIN'>
                 <div className="sideBar">
+                    <Button>
+                        Add folder
+                    </Button>
 
+
+                    <div className={"sideBar-List"}>
+
+                    </div>
 
                 </div>
                 <div className="noteArea">
-                    {currentNote ? (<>
+                    {selectedNote ? (<>
                            <textarea className={"note"} placeholder={"start the note "}>
 
                        </textarea>

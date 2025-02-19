@@ -1,5 +1,5 @@
 import  {  InputHTMLAttributes } from 'react'
-import Button from "./Button.tsx";
+import Button from "./Button";
 import {useState} from "react";
 
 
