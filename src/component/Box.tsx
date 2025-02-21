@@ -33,7 +33,7 @@ function BoxCard({name, id, type, Select , Delete}: box) {
                         <div onClick={() => {Select(id , "folder")}} >
                             <FilePlus2 />
                         </div>
-                        <div >
+                        <div onClick={() => {Delete(id , "folder")}} >
                             <Trash />
                         </div>
 
