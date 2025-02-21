@@ -2,7 +2,7 @@
 
 
 
-import {userCardProps} from "../TYPE.ts";
+import {userCardProps} from "../TYPE";
 
 function UserHeaderCard({ img, name }: userCardProps) {
     return (

@@ -5,7 +5,7 @@ import Button from "../component/UI/Button";
 import axios from "axios";
 
 function Register() {
-    const {isLoading} = useSession();
+    useSession();
     const [signStart , setSignStart] = useState<boolean>(false);
     const [loginInfo, setLoginInfo] = useState({
         username: "",
