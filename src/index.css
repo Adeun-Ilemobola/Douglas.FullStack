@@ -196,7 +196,7 @@ body{
   width: 100%;
   height: 75%;
   display: grid;
-  grid-template-columns: 120px 1fr 220px;
+  grid-template-columns: 120px 1fr 280px;
   gap: 2px;
 
 
@@ -214,6 +214,7 @@ body{
   flex-direction: row;
   align-items: center;
   padding: 2px;
+  gap: 15px;
 
 }
 
@@ -229,9 +230,24 @@ body{
 
 .sideBar{
   max-width: 400px ;
-  width: 180px;
+  width: 300px;
   border-right: 1px solid var(--accent-400);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   height: 100%;
+}
+
+.sideBar-List{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+  gap: 12px;
+  width: 100%;
+
+
+
 }
 
 .note{
@@ -532,3 +548,75 @@ HeaderCardImgContainer p{
 .p-sm { padding: 0.5rem; }
 .p-md { padding: 1rem; }
 .p-lg { padding: 1.5rem; }
+
+
+/* ------------------------ noteBox  and folderBox --------------------------- */
+
+.noteBox{
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--accent-800);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  height: 39px;
+  margin-left: 20px;
+
+}
+
+.folderBox{
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: var(--background-300);
+  color: var(--text-900);
+  border: 1px solid var(--accent-800);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 39px;
+
+}
+.folderBox h3 ,.noteBox h3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px; /* Adjust as needed */
+
+}
+
+.folderBox .ActionBtuContainer,
+.noteBox .ActionBtuContainer {
+
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+}
+
+
+.Structure{
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+/* Loading page*/
+
+.LoadingPage{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+
+

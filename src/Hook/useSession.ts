@@ -18,13 +18,10 @@ export function useSession() {
                 sessionStorage.getItem("activeSession") || "null"
             );
 
-            console.log(
-                "getActiveSession in session: ",
-                getActiveSession
-            )
+
             // if the browser does not have   the user Session send the user back to the login
             if (!getActiveSession) {
-                console.log("getActiveSession: no activeSession");
+
                 setSession(null);
                 navigate("/Login");
                 return;
@@ -40,14 +37,14 @@ export function useSession() {
 
             if (error) {
                 setSession(null);
-                console.log("Session not found-1");
+                // console.log("Session not found-1");
                 setSession(null);
                 navigate("/Login");
 
             }
             if (data) {
-                console.log(data);
-                setSession(data || null);
+
+                setSession(data);
 
             }
 
@@ -71,7 +68,7 @@ export function useSession() {
         if (!session) {
             fetchSession();
         }
-    }, [session ]);
+    }, [session  ]);
 
 
     const refreshSession = useCallback(()=>{
@@ -82,12 +79,11 @@ export function useSession() {
     async function Login({username, password}: { username: string, password: string }) {
         setIsLoading(true)
         try {
-            const response = await axios.post("https://nodevap.onrender.com/api/login", {
+            const response = await axios.post("https://nodevap.onrender.com/api/Login", {
                 username: username.trim(),
                 password: password.trim(),
             })
 
-            console.log("Response:", response.data);
             const {error, data} = response.data; // Extract fields directly
             if (error) {
                 console.log("Login Error:", error);

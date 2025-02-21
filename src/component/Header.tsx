@@ -1,9 +1,10 @@
-import UserHeaderCard from "./userHeaderCard.tsx";
-import {userCardProps} from "../TYPE.ts";
-import ThemeToggle from "./UI/ThemeToggle.tsx";
+import UserHeaderCard from "./userHeaderCard";
+import {userCardProps} from "../TYPE";
+import ThemeToggle from "./UI/ThemeToggle";
+import Button from "./UI/Button";
 
 
-function Header({userDate}:{userDate:userCardProps}) {
+function Header({userDate , endSession}:{userDate:userCardProps , endSession: () => void}) {
     return (
         <header className={"HEADER"}>
             <div className="sub">
@@ -20,6 +21,7 @@ function Header({userDate}:{userDate:userCardProps}) {
 
                 <div className="navRight">
                     <ThemeToggle/>
+                    <Button onClick={endSession}>logout</Button>
                     <UserHeaderCard name={userDate.name} id={userDate.id} img={userDate.img}/>
                 </div>
             </div>
