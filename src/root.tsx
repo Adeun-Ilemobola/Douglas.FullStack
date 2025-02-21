@@ -1,8 +1,8 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from "./APP/Home.tsx";
-import Login from "./APP/Login.tsx";
-import Register from "./APP/Register.tsx";
+import Home from "./APP/Home";
+import Login from "./APP/Login";
+import Register from "./APP/Register";
 
 
 
