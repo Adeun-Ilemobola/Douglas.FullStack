@@ -1,6 +1,7 @@
 import {useState, useEffect, useCallback} from "react";
 import {useLocation, useNavigate,} from 'react-router-dom';
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
 import {Session} from "../TYPE";
 
 
@@ -21,7 +22,6 @@ export function useSession() {
 
             // if the browser does not have   the user Session send the user back to the login
             if (!getActiveSession) {
-
                 setSession(null);
                 navigate("/Login");
                 return;
@@ -32,31 +32,30 @@ export function useSession() {
             const response = await axios.post(
                 "https://nodevap.onrender.com/api/Session",
                 getActiveSession
-            );
-            const {data, error} = response.data;
+            )
+            const {data} = response.data;
 
-            if (error) {
-                setSession(null);
-                // console.log("Session not found-1");
+
+            if (data) {
+
+                setSession(data);
+                navigate("/");
+
+            }else {
                 setSession(null);
                 navigate("/Login");
 
             }
-            if (data) {
 
-                setSession(data);
-
-            }
 
 
         } catch (e) {
             if (axios.isCancel(e)) {
                 console.log("Session validation cancelled.");
 
-            } else {
-
-                console.log(e)
             }
+            setSession(null);
+            navigate("/Login");
 
         } finally {
             setIsLoading(false);
@@ -76,7 +75,7 @@ export function useSession() {
     },[])
 
 
-    async function Login({username, password}: { username: string, password: string }) {
+    async function Login({username, password}: { username: string, password: string }): Promise<string | null> {
         setIsLoading(true)
         try {
             const response = await axios.post("https://nodevap.onrender.com/api/Login", {
@@ -84,11 +83,7 @@ export function useSession() {
                 password: password.trim(),
             })
 
-            const {error, data} = response.data; // Extract fields directly
-            if (error) {
-                console.log("Login Error:", error);
-                return;
-            }
+            const {data} = response.data; // Extract fields directly
             if (data) {
                 sessionStorage.setItem("activeSession", JSON.stringify(data || null));
                 refreshSession()
@@ -97,13 +92,23 @@ export function useSession() {
             }
 
 
-        } catch (e) {
 
-            console.log(e)
+        } catch (e) {
+            if (axios.isAxiosError(e)){
+                const err =  e as AxiosError;
+
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                return err.response.data.error ? err.response.data.error : null;
+            }else {
+                console.log("Unexpected Error:", e);
+            }
+
+
         } finally {
             setIsLoading(false)
         }
-
+        return null
 
     }
 

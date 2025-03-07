@@ -16,7 +16,10 @@ function BoxCard({name, id, type, Select , Delete}: box) {
                 type === "note" && (<div className={"noteBox"} onClick={() => {Select(id , "note")}}>
                     <h3>{name}</h3>
                     <div className={"ActionBtuContainer"}>
-                        <div >
+                        <div onClick={(e) => {
+                            e.stopPropagation()
+                            Delete(id , "note")
+                        }} >
                             <Trash />
                         </div>
 
@@ -30,10 +33,16 @@ function BoxCard({name, id, type, Select , Delete}: box) {
                     <h3>{name}</h3>
                     <div className={"ActionBtuContainer"}>
 
-                        <div onClick={() => {Select(id , "folder")}} >
+                        <div onClick={(e) => {
+                            e.stopPropagation()
+                            Select(id , "folder")
+                        }} >
                             <FilePlus2 />
                         </div>
-                        <div onClick={() => {Delete(id , "folder")}} >
+                        <div onClick={(e) => {
+                            e.stopPropagation()
+                            Delete(id , "folder")
+                        }} >
                             <Trash />
                         </div>
 

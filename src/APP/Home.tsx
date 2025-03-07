@@ -1,12 +1,13 @@
 import {useState, useEffect, useCallback} from 'react'
 import Header from "../component/Header";
-import { Outlet} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import {useSession} from "../Hook/useSession";
 import Button from "../component/UI/Button";
 import DialogPopover from "../component/UI/DialogPopover";
 import axios from "axios";
 import Input from "../component/UI/Input";
 import BoxCard from "../component/Box";
+import {devMode} from "../lib/db";
 
 
 type Note = {
@@ -31,13 +32,14 @@ type Folder = {
 
 
 // API access == https://nodevap.onrender.com/api/
-type  StructureX ={
+type  StructureX = {
     name: string,
     id: string,
-    Children:{name: string, id: string}[],
+    Children: { name: string, id: string }[],
 
 }
 export default function Home() {
+    const URL = devMode("localhost")
     const {isLoading, session, Logout} = useSession();
     const [openDialogFolder, setOpenDialogFolder] = useState(false)
     const [openDialogNote, setOpenDialogNote] = useState(false)
@@ -124,7 +126,7 @@ export default function Home() {
             setLoading(true);
             if (session) {
                 console.log("Refresh")
-                const {data: response} = await axios.post("https://nodevap.onrender.com/api/userCollection", {userID: session.user.id})
+                const {data: response} = await axios.post(URL + "userCollection", {userID: session.user.id})
                 const {data} = response
                 const {notesA, folderA, struct} = data
                 setNotes(notesA);
@@ -168,14 +170,12 @@ export default function Home() {
 
             }
 
-            const {data} = await axios.post("https://nodevap.onrender.com/api/userNote",
+            const {data} = await axios.post(URL + "userNote",
                 {
-                    method: "add",
                     userID: session.user.id,
                     name: newItem.name,
                     folderID: newItem.selectedFolder,
-                    id:"",
-                    text:""
+
                 }
             )
             const {error} = data;
@@ -196,19 +196,17 @@ export default function Home() {
         } finally {
             setLoading(false);
         }
-    }, [newItem, session])
+    }, [newItem, session, selectedNote])
 
 
     const AddFoder = useCallback(async () => {
         try {
             setLoading(true);
             if (!session) return;
-            const {data} = await axios.post("https://nodevap.onrender.com/api/userFolder",
+            const {data} = await axios.post(URL + "userFolder",
                 {
-                    method: "add",
                     userID: session.user.id,
                     name: newItem.name,
-                    id:""
 
                 }
             )
@@ -233,33 +231,32 @@ export default function Home() {
     }, [newItem, session])
 
 
-
-
     const startSave = useCallback(async () => {
-        if (!selectedNote){
+        if (!selectedNote) {
             console.log(" no selection")
             return false;
         }
         try {
+            if (session) {
+                console.log(`Saving note... ID: ${selectedNote.id}, Name: ${selectedNote.name}`);
 
-            console.log(`Saving note... ID: ${selectedNote.id}, Name: ${selectedNote.name}`);
-            const response = await axios.post("https://nodevap.onrender.com/api/userNote", {
-                    method: "update",
-                    userID: "",
+                const response = await axios.put(`${URL}userNote/${selectedNote.id}`, {
+                    userID: session.user.id,
                     name: selectedNote.name,
-                    folderID: "",
-                    id: selectedNote.id,
                     text: selectedNote.text,
                 });
-            console.log("Response received from API:", response);
 
-            if (response.data.error) {
-                console.error("API returned an error:", response.data.error);
-                return false;
+
+                console.log("Response received from API:", response);
+
+                if (response.data.error) {
+                    console.error("API returned an error:", response.data.error);
+                    return false;
+                }
+
+                return true;
+
             }
-
-            return true;
-
 
 
         } catch (err) {
@@ -268,12 +265,12 @@ export default function Home() {
         }
     }, [selectedNote]);
 
-  async  function Select(id: string, type: "note" | "folder") {
+    async function Select(id: string, type: "note" | "folder") {
         try {
-            console.log("data id: " , id , "   type:", type)
+            console.log("data id: ", id, "   type:", type)
             if (type === "note") {
 
-                if (selectedNote && selectedNote.id !== id) {
+                if (selectedNote) {
                     console.log("Saving current note before switching...");
                     const savedSuccessfully = await startSave();
                     console.log(savedSuccessfully)
@@ -286,19 +283,13 @@ export default function Home() {
                 await Refresh();
 
 
-
-                setTimeout(() => {
-                    console.log("Setting new selection:", id);
-                    const getNewSelection = Notes.find(op => op.id === id);
-                    if (getNewSelection) {
-                        setSelectedNote(getNewSelection);
-                    } else {
-                        console.log("Note not found in Notes state.");
-                    }
-                }, 50); // Small delay to ensure state update
-
-
-
+                console.log("Setting new selection:", id);
+                const getNewSelection = Notes.find(op => op.id === id);
+                if (getNewSelection) {
+                    setSelectedNote(getNewSelection);
+                } else {
+                    console.log("Note not found in Notes state.");
+                }
 
 
             } else if (type === "folder") {
@@ -311,38 +302,56 @@ export default function Home() {
             }
 
 
-
-
         } catch (err) {
             console.log(err)
         }
     }
 
 
-
-
-
-    function Delete(id: string, type: "note" | "folder") {
+    async function Delete(id: string, type: "note" | "folder") {
         if (type === "note") {
-            console.log("id :", id , "   type:", type)
+            console.log("Delete start")
+            if (session) {
+                const response = await axios.delete(`${URL}userNote/${id}/${session.user.id}`);
+                const {error} = response.data;
+                if (error) {
+                    alert(error);
+                }
 
-        }else if (type === "folder") {
-            console.log("id :", id , "   type:", type)
+            }
+            await Refresh();
+            return;
+
+
+        } else if (type === "folder") {
+            console.log("id :", id, "   type:", type)
+
+            if (session) {
+                const response = await axios.delete(`${URL}userFolder/${id}/${session.user.id}`);
+                const {error} = response.data;
+                if (error) {
+                    alert(error);
+                }
+
+            }
+            await Refresh();
+            return;
 
         }
 
+
     }
-    useEffect(()=>{
-        Refresh()
-    },[ Refresh])
+
+    useEffect(() => {
+        (async () => {
+            await Refresh();
+        })();
+    }, [Refresh]);
 
 
-
-   if(isLoading){
-       return (<div className={"LoadingPage"}>Loading...</div>)
-   }
-
-
+    if (isLoading) {
+        return (<div className={"LoadingPage"}>Loading...</div>)
+    }
 
 
     return (
@@ -350,8 +359,10 @@ export default function Home() {
             <DialogPopover isOpen={openDialogFolder} onClose={() => setOpenDialogFolder(false)}>
                 <Input showLabel={true} LabelI={"name"} value={newItem.name}
                        onChange={(e) => handleIput(e.target.value)}/>
-                <Button onClick={() => {AddFoder()}} disabled={Loading}>
-                    {Loading  ?"Loading...":"Create folder" }
+                <Button onClick={() => {
+                    AddFoder()
+                }} disabled={Loading}>
+                    {Loading ? "Loading..." : "Create folder"}
                 </Button>
             </DialogPopover>
 
@@ -364,8 +375,8 @@ export default function Home() {
 
             }}>
                 <h2>add [{newItem.name}] at [{
-                    Folders.filter(o=>o.id=== newItem.selectedFolder)[0]
-                        ? Folders.filter(o=>o.id=== newItem.selectedFolder)[0].name
+                    Folders.filter(o => o.id === newItem.selectedFolder)[0]
+                        ? Folders.filter(o => o.id === newItem.selectedFolder)[0].name
                         :
                         "null"
                 }]</h2>
@@ -377,7 +388,7 @@ export default function Home() {
                     }
 
                 }} disabled={Loading}>
-                    {Loading  ?"Loading...":"Create Note" }
+                    {Loading ? "Loading..." : "Create Note"}
                 </Button>
             </DialogPopover>
 
@@ -393,7 +404,7 @@ export default function Home() {
             />
             <main className='MAIN'>
                 <div className="sideBar">
-                    <Button onClick={()=>setOpenDialogFolder(true)}>
+                    <Button onClick={() => setOpenDialogFolder(true)}>
                         Add folder
                     </Button>
 
@@ -403,7 +414,8 @@ export default function Home() {
                             <div key={index} className="Structure">
                                 <BoxCard name={item.name} id={item.id} type={"folder"} Select={Select} Delete={Delete}/>
                                 {item.Children.map((itemc, indexc) => (
-                                    <BoxCard key={indexc} name={itemc.name} id={itemc.id} type={"note"} Select={Select} Delete={Delete}/>
+                                    <BoxCard key={indexc} name={itemc.name} id={itemc.id} type={"note"} Select={Select}
+                                             Delete={Delete}/>
                                 ))}
 
 
@@ -415,16 +427,32 @@ export default function Home() {
                 </div>
                 <div className="noteArea">
                     {selectedNote ? (<>
-                        <h1>{selectedNote.name}</h1>
-                           <textarea value={selectedNote.text} className={"note"} placeholder={"start the note "}
-                                     onChange={(e) => {
-                                         setSelectedNote(prevState => {
-                                             if (!prevState) return null;
-                                             return { ...prevState, text: e.target.value };
+                        <Input
+                            showLabel={false}
+                            LabelI={""} value={selectedNote.name}
+                            onChange={(e) => {
+                                setSelectedNote(pre => {
 
-                                         })
-                                     }}
-                           >
+                                    if (pre) {
+                                        return {
+                                            ...pre,
+                                            name: e.target.value,
+                                        }
+
+                                    }
+                                    return pre;
+                                })
+                            }
+                            }/>
+                        <textarea value={selectedNote.text} className={"note"} placeholder={"start the note "}
+                                  onChange={(e) => {
+                                      setSelectedNote(prevState => {
+                                          if (!prevState) return null;
+                                          return {...prevState, text: e.target.value};
+
+                                      })
+                                  }}
+                        >
 
                        </textarea>
                     </>) : <h1> select Notes</h1>}

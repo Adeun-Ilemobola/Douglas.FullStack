@@ -11,6 +11,7 @@
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
+    "esModuleInterop": true,
 
 
     /* ✅ Output JavaScript files in js-src folder */

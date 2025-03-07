@@ -22,6 +22,7 @@ function Login() {
         username: "",
         password: "",
     })
+    const [error, setError] = useState<string |null>(null)
 
 
 
@@ -51,7 +52,10 @@ function Login() {
                         console.log("Button clicked!");  // Debugging
                         if (loginInfo.username && loginInfo.password) {
                             console.log(loginInfo)
-                             Login(loginInfo)
+                             Login(loginInfo).then((data)=>{
+                                 setError(data);
+
+                             })
 
 
                             setLoginInfo({
@@ -59,9 +63,13 @@ function Login() {
                                 password: "",
                             })
 
+                        }else {
+                            setError(" please enter valid data")
                         }
+
                     }}
                 > Login</Button>
+            {error && <p>{error}</p>}
             <Link to="/Register">
                 <p>Register</p>
 
