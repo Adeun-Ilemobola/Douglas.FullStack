@@ -1,5 +1,5 @@
 import React , {useState} from 'react';
-import { useNavigate , useLocation  , useParams } from "react-router";
+import { useParams } from "react-router";
 import z from "zod"
 import {useSession} from "../Hook/useSession";
 import Input from "../component/UI/Input";
@@ -10,7 +10,7 @@ import Button from "../component/UI/Button";
 const Settings = () => {
     const URL = devMode("localhost")
 
-    const {isLoading, session} = useSession();
+    const {isLoading} = useSession();
     const [formInfo  , setFormIfo] = useState({
         username: "",
         email: "",
@@ -24,8 +24,8 @@ const Settings = () => {
     const [error, setError] = useState("")
 
 
-    const navigate = useNavigate();
-    const url =useLocation();
+
+
     const {username , id} = useParams();
     const Z_FormInfo = z.object({
         username: z.string().min(3, 'Username must be at least 3 characters long').max(50, 'Username must be under 50 characters'),
