@@ -8,6 +8,8 @@ import axios from "axios";
 import Input from "../component/UI/Input";
 import BoxCard from "../component/Box";
 import {devMode} from "../lib/db";
+import { DateTime } from "luxon";
+
 
 
 type Note = {
@@ -48,6 +50,7 @@ export default function Home() {
     const [Loading, setLoading] = useState<boolean>(false);
     const [Folders, setFolders] = useState<Folder[]>([]);
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+    const [lastEdited , setLastEdited] = useState<string | null>(null);
 
     const [newItem, setNewItem] = useState<{ name: string, selectedFolder: string | null }>({
         name: "",
@@ -291,6 +294,8 @@ export default function Home() {
                     console.log("Note not found in Notes state.");
                 }
 
+                setLastEdited(DateTime.now().toISODate())
+
 
             } else if (type === "folder") {
                 setNewItem(prevState => ({
@@ -347,10 +352,35 @@ export default function Home() {
             await Refresh();
         })();
     }, [Refresh]);
+    useEffect(() => {
+        const timeoutId = setTimeout(async () => {
+            await autoSave();
+        }, 3500);
+
+        return () => clearTimeout(timeoutId);
+    }, [lastEdited]);
 
 
     if (isLoading) {
         return (<div className={"LoadingPage"}>Loading...</div>)
+    }
+    async  function  autoSave() {
+
+        if (lastEdited ) {
+            // save the selected note
+            const curr =  DateTime.fromISO(lastEdited);
+            const now = DateTime.now();
+            if (curr < now){
+                if (selectedNote){
+                    await startSave();
+                    await Refresh();
+                }
+            }
+            setLastEdited(null);
+
+
+        }
+
     }
 
 

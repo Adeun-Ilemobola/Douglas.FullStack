@@ -23,7 +23,10 @@ export function useSession() {
             // if the browser does not have   the user Session send the user back to the login
             if (!getActiveSession) {
                 setSession(null);
-                navigate("/Login");
+                if (!url.pathname.includes("Register") ) {
+                    navigate("/Login");
+                }
+
                 return;
 
             }
@@ -36,10 +39,14 @@ export function useSession() {
             const {data} = response.data;
 
 
-            if (data) {
+            if (data)  {
 
                 setSession(data);
-                navigate("/");
+                if (url.pathname.includes("/Login") || url.pathname.includes("/Register")) {
+                    navigate("/");
+
+                }
+
 
             }else {
                 setSession(null);
@@ -64,10 +71,9 @@ export function useSession() {
     }
 
     useEffect(() => {
-        if (!session) {
-            fetchSession();
-        }
-    }, [session  ]);
+
+        fetchSession();
+    }, [ ]);
 
 
     const refreshSession = useCallback(()=>{

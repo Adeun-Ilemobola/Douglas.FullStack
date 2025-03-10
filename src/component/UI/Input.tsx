@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
      isPassword?: boolean,
 
 }
-export default function Input({isPassword = false , ClassName,  showLabel, LabelI, type, value  , ...other }: InputProps) {
+export default function Input({isPassword = false , ClassName,  showLabel, LabelI, type, value   , ...other }: InputProps) {
      const [showPassword, setShowPassword] = useState(!isPassword);
 
      return (

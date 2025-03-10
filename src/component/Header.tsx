@@ -2,6 +2,7 @@ import UserHeaderCard from "./userHeaderCard";
 import {userCardProps} from "../TYPE";
 import ThemeToggle from "./UI/ThemeToggle";
 import Button from "./UI/Button";
+import {Link} from "react-router-dom";
 
 
 function Header({userDate , endSession}:{userDate:userCardProps , endSession: () => void}) {
@@ -19,10 +20,15 @@ function Header({userDate , endSession}:{userDate:userCardProps , endSession: ()
 
                 </div>
 
+
+
                 <div className="navRight">
                     <ThemeToggle/>
                     <Button onClick={endSession}>logout</Button>
-                    <UserHeaderCard name={userDate.name} id={userDate.id} img={userDate.img}/>
+                    <Link to={`/Settings/${userDate.name}/${userDate.id}`}>
+                        <UserHeaderCard name={userDate.name} id={userDate.id} img={userDate.img}/>
+                    </Link>
+
                 </div>
             </div>
 
