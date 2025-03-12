@@ -3,6 +3,7 @@ import {userCardProps} from "../TYPE";
 import ThemeToggle from "./UI/ThemeToggle";
 import Button from "./UI/Button";
 import {Link} from "react-router-dom";
+import SciFiLogo from "./SVG";
 
 
 function Header({userDate , endSession}:{userDate:userCardProps , endSession: () => void}) {
@@ -11,7 +12,13 @@ function Header({userDate , endSession}:{userDate:userCardProps , endSession: ()
             <div className="sub">
                 {/*the logo and name */}
                 <div className="logoContainer">
-                    <h1>logoCon</h1>
+                    <SciFiLogo
+                        primaryColor="#0056b3"
+                        secondaryColor="#fafafa"
+                        accentColor="#e64a19"
+                        width={250}
+                        height={250}
+                    />
 
                 </div>
                 {/*the nav  section or link*/}

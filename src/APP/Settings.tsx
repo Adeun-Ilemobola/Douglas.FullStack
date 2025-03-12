@@ -22,6 +22,7 @@ const Settings = () => {
     });
     const [onChange , setChange] = useState(false)
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
 
 
 
@@ -49,6 +50,12 @@ const Settings = () => {
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         const {value , name} = e.target;
+        if (name === "newPassword" || name === "passwordConfirm" || name === "oldPassword") {
+            if (value.length >0){
+                setFormIfo(prevState => ({...prevState, isNewpassword: true }));
+
+            }
+        }
         setFormIfo(prevState => ({...prevState, [name]: value }));
         setChange(true)
 
@@ -91,26 +98,28 @@ const Settings = () => {
 
         }
 
+        setLoading(false);
+
 
     }
     return (
         <div className='ROOTCONPONENT'>
 
 
-            <main className='MAINPAGE'>
-                <h2> settings for {username ? username : ""}</h2>
-                <h1>{id}</h1>
+            <main className='MAINPAGE Settings'>
+                <h1> settings for {username ? username : ""}</h1>
                 <form onSubmit={(e)=>{
                     e.preventDefault();
+                    setLoading(true)
                     Send()
                 }}>
-                    <Input showLabel={true} LabelI="username" name="username" onChange={handleInput} />
-                    <Input showLabel={true} LabelI="email" name="email" onChange={handleInput} />
-                    <Input showLabel={true} LabelI="newPassword" name="newPassword" onChange={handleInput} isPassword={true} />
-                    <Input showLabel={true} LabelI="oldPassword" name="oldPassword" onChange={handleInput} isPassword={true} />
-                    <Input showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading} className={"w-55"}  showLabel={true} LabelI="username" name="username" onChange={handleInput} />
+                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="email" name="email" onChange={handleInput} />
+                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="newPassword" name="newPassword" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="oldPassword" name="oldPassword" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" onChange={handleInput} isPassword={true} />
 
-                    <Button type={"submit"}> update</Button>
+                    <Button disabled={loading} type={"submit"}>{loading ? "loading" : "update"} </Button>
 
                     {error && <p style={{color:"red"}}>{error}</p>}
                 </form>

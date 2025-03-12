@@ -155,6 +155,8 @@ export default function Home() {
             name: value,
         }))
 
+
+
     }
 
 
@@ -165,7 +167,6 @@ export default function Home() {
                 setLoading(false);
                 return;
             }
-            ;
             if (!newItem.selectedFolder) {
                 alert(" please select a folder or collection you want to create this note in")
                 setLoading(false);
@@ -294,7 +295,7 @@ export default function Home() {
                     console.log("Note not found in Notes state.");
                 }
 
-                setLastEdited(DateTime.now().toISODate())
+
 
 
             } else if (type === "folder") {
@@ -315,6 +316,9 @@ export default function Home() {
 
     async function Delete(id: string, type: "note" | "folder") {
         if (type === "note") {
+            if (selectedNote && selectedNote.id === id) {
+                setSelectedNote(null);
+            }
             console.log("Delete start")
             if (session) {
                 const response = await axios.delete(`${URL}userNote/${id}/${session.user.id}`);
@@ -330,6 +334,9 @@ export default function Home() {
 
         } else if (type === "folder") {
             console.log("id :", id, "   type:", type)
+            if (selectedNote && selectedNote.folderID === id) {
+                setSelectedNote(null);
+            }
 
             if (session) {
                 const response = await axios.delete(`${URL}userFolder/${id}/${session.user.id}`);
@@ -355,7 +362,7 @@ export default function Home() {
     useEffect(() => {
         const timeoutId = setTimeout(async () => {
             await autoSave();
-        }, 3500);
+        }, 1500);
 
         return () => clearTimeout(timeoutId);
     }, [lastEdited]);
@@ -472,6 +479,7 @@ export default function Home() {
                                     }
                                     return pre;
                                 })
+                                setLastEdited(DateTime.now().toISOTime())
                             }
                             }/>
                         <textarea value={selectedNote.text} className={"note"} placeholder={"start the note "}
@@ -481,7 +489,9 @@ export default function Home() {
                                           return {...prevState, text: e.target.value};
 
                                       })
+                                      setLastEdited(DateTime.now().toISOTime())
                                   }}
+
                         >
 
                        </textarea>

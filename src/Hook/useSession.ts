@@ -3,6 +3,7 @@ import {useLocation, useNavigate,} from 'react-router-dom';
 import axios, { AxiosError } from "axios";
 
 import {Session} from "../TYPE";
+import {devMode2} from "../lib/db";
 
 
 export function useSession() {
@@ -31,11 +32,11 @@ export function useSession() {
 
             }
 
-
             const response = await axios.post(
-                "https://nodevap.onrender.com/api/Session",
+                devMode2("localhost" , "Session"),
                 getActiveSession
             )
+
             const {data} = response.data;
 
 
@@ -57,10 +58,9 @@ export function useSession() {
 
 
         } catch (e) {
-            if (axios.isCancel(e)) {
-                console.log("Session validation cancelled.");
+           const {response} = e as AxiosError<{ error: string |null, data: object |null}>
 
-            }
+            console.log(response?.data)
             setSession(null);
             navigate("/Login");
 
@@ -71,20 +71,19 @@ export function useSession() {
     }
 
     useEffect(() => {
-
         fetchSession();
-    }, [ ]);
+    }, []);
 
 
     const refreshSession = useCallback(()=>{
         fetchSession()
-    },[])
+    },[fetchSession])
 
 
     async function Login({username, password}: { username: string, password: string }): Promise<string | null> {
         setIsLoading(true)
         try {
-            const response = await axios.post("https://nodevap.onrender.com/api/Login", {
+            const response = await axios.post(devMode2("localhost" , "Login"), {
                 username: username.trim(),
                 password: password.trim(),
             })

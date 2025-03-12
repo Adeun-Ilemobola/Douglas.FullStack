@@ -10,11 +10,11 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
      isPassword?: boolean,
 
 }
-export default function Input({isPassword = false , ClassName,  showLabel, LabelI, type, value   , ...other }: InputProps) {
+export default function Input({isPassword = false ,  showLabel, LabelI, type, value , className   , ...other }: InputProps) {
      const [showPassword, setShowPassword] = useState(!isPassword);
 
      return (
-          <div className={`inputContainer ${ClassName}`}>
+          <div className={`inputContainer ${className}`}>
                {showLabel && <label htmlFor="">{LabelI}</label>}
                {isPassword?  (<>
                     <div className="passWordBox">
