@@ -41,7 +41,7 @@ type  StructureX = {
 
 }
 export default function Home() {
-    const URL = devMode("localhost")
+    const URL = devMode("render")
     const {isLoading, session, Logout} = useSession();
     const [openDialogFolder, setOpenDialogFolder] = useState(false)
     const [openDialogNote, setOpenDialogNote] = useState(false)

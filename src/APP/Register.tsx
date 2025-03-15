@@ -14,14 +14,14 @@ function Register() {
         password2: "",
     })
     return (
-        <div className={"ROOTX"}>
+        <div className={"ROOTX Register"}>
             <Input
                 LabelI={"Username"}
                 showLabel={true}
                 type='text'
                 placeholder='Username'
                 value={loginInfo.username}
-                ClassName="loginForm__input"
+                className={"w-55"}
                 disabled={signStart}
                 onChange={(e)=>{setLoginInfo(pre=>({...pre , username: e.target.value}))}} />
 
@@ -34,7 +34,7 @@ function Register() {
                 placeholder='email'
                 value={loginInfo.email}
                 disabled={signStart}
-                ClassName="loginForm__input"
+                className={"w-55"}
                 onChange={(e)=>{setLoginInfo(pre=>({...pre , email: e.target.value}))}}
 
 
@@ -48,7 +48,7 @@ function Register() {
                 placeholder='Password'
                 value={loginInfo.password}
                 disabled={signStart}
-                ClassName="loginForm__input"
+                className={"w-55"}
                 onChange={(e)=>{setLoginInfo(pre=>({...pre , password: e.target.value}))}}
 
 
@@ -61,7 +61,7 @@ function Register() {
                 placeholder='Password'
                 value={loginInfo.password2}
                 disabled={signStart}
-                ClassName="loginForm__input"
+                className={"w-55"}
                 onChange={(e)=>{setLoginInfo(pre=>({...pre , password2: e.target.value}))}}
 
 
@@ -83,9 +83,6 @@ function Register() {
                         }).catch((err)=>{
                             console.log(err);
                         })
-
-
-
 
 
 

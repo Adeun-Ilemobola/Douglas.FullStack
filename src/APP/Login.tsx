@@ -1,5 +1,5 @@
 import "./login.css"
-import { useState} from "react";
+import { useState , useEffect} from "react";
 import Input from "../component/UI/Input";
 import Button from "../component/UI/Button";
 import {useSession} from "../Hook/useSession";
@@ -24,10 +24,23 @@ function Login() {
     })
     const [error, setError] = useState<string |null>(null)
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setError("")
+        },2000)
+
+        return () => {clearTimeout(timer)}
+
+    },[error])
+
 
 
     return (
         <div className='ROOTX LOGIN'>
+
+            {error && <div className="alert alert-danger position-absolute top-0 start-100 m-3" role="alert">
+                {error}
+            </div>}
 
                 <Input
                     LabelI={"Username"}
@@ -35,7 +48,7 @@ function Login() {
                     type='text'
                     placeholder='Username'
                     value={loginInfo.username}
-                    ClassName="loginForm__input"
+                    className={"loginForm__input"}
                     onChange={(e)=>{setLoginInfo(pre=>({...pre , username: e.target.value}))}} />
                 <Input
                     isPassword={true}
@@ -44,7 +57,8 @@ function Login() {
                     type='password'
                     placeholder='Password'
                     value={loginInfo.password}
-                    ClassName="loginForm__input"
+                    className={"loginForm__input"}
+
                     onChange={(e)=>{setLoginInfo(pre=>({...pre , password: e.target.value}))}} />
                 <Button
                     className="loginButton"
@@ -69,7 +83,7 @@ function Login() {
 
                     }}
                 > Login</Button>
-            {error && <p>{error}</p>}
+
             <Link to="/Register">
                 <p>Register</p>
 

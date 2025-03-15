@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from "react-router";
 import z from "zod"
 import {useSession} from "../Hook/useSession";
@@ -8,7 +8,7 @@ import {devMode} from "../lib/db";
 import Button from "../component/UI/Button";
 // {username:string , password:string , email:string , newPassword:string , oldPassword:string , passwordConfirm:string , isNewpassword:boolean}
 const Settings = () => {
-    const URL = devMode("localhost")
+    const URL = devMode("render")
 
     const {isLoading} = useSession();
     const [formInfo  , setFormIfo] = useState({
@@ -22,10 +22,8 @@ const Settings = () => {
     });
     const [onChange , setChange] = useState(false)
     const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
     const [loading, setLoading] = useState(false)
-
-
-
 
     const {username , id} = useParams();
     const Z_FormInfo = z.object({
@@ -44,6 +42,26 @@ const Settings = () => {
         message: 'Passwords do not match',
         path: ['passwordConfirm'],
     });
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setError("")
+        },1500)
+
+        return () => {clearTimeout(timer)}
+
+    },[error])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSuccess("")
+        },2000)
+
+        return () => {clearTimeout(timer)}
+
+    },[success])
+
+
+
     if (isLoading) {
         return (<div className={"LoadingPage"}>Loading...</div>)
     }
@@ -80,6 +98,7 @@ const Settings = () => {
 
                     if (data){
                         console.log(data)
+                        setSuccess(" successfully updated account")
                     }
 
                 }catch(e){
@@ -102,26 +121,32 @@ const Settings = () => {
 
 
     }
+
+
     return (
         <div className='ROOTCONPONENT'>
+            {error && <div className="alert alert-danger position-absolute top-0 start-0 m-3" role="alert">
+                {error}
+            </div>}
+
 
 
             <main className='MAINPAGE Settings'>
                 <h1> settings for {username ? username : ""}</h1>
-                <form onSubmit={(e)=>{
+                <form className={"formX"} onSubmit={(e)=>{
                     e.preventDefault();
                     setLoading(true)
                     Send()
                 }}>
-                    <Input disabled={loading} className={"w-55"}  showLabel={true} LabelI="username" name="username" onChange={handleInput} />
-                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="email" name="email" onChange={handleInput} />
-                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="newPassword" name="newPassword" onChange={handleInput} isPassword={true} />
-                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="oldPassword" name="oldPassword" onChange={handleInput} isPassword={true} />
-                    <Input disabled={loading} className={"w-55"}   showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="username" name="username" onChange={handleInput} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="email" name="email" onChange={handleInput} />
+                    <Input disabled={loading} className={"w-55"}    showLabel={true} LabelI="newPassword" name="newPassword" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="oldPassword" name="oldPassword" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" onChange={handleInput} isPassword={true} />
 
                     <Button disabled={loading} type={"submit"}>{loading ? "loading" : "update"} </Button>
 
-                    {error && <p style={{color:"red"}}>{error}</p>}
+
                 </form>
 
             </main>

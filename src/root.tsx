@@ -4,6 +4,7 @@ import Home from "./APP/Home";
 import Login from "./APP/Login";
 import Register from "./APP/Register";
 import Settings from "./APP/Settings";
+import NotFound from "./component/NotFound";
 
 
 
@@ -18,6 +19,7 @@ export default function Root() {
                   <Route path="/Login" element={<Login/>} />
                   <Route path={"/Register"} element={<Register/>}/>
                   <Route path={"/Settings/:username/:id"} element={<Settings/>}/>
+                  <Route path="*" element={<NotFound/>} />
 
 
 

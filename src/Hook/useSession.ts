@@ -33,7 +33,7 @@ export function useSession() {
             }
 
             const response = await axios.post(
-                devMode2("localhost" , "Session"),
+                devMode2("render" , "Session"),
                 getActiveSession
             )
 
@@ -83,7 +83,7 @@ export function useSession() {
     async function Login({username, password}: { username: string, password: string }): Promise<string | null> {
         setIsLoading(true)
         try {
-            const response = await axios.post(devMode2("localhost" , "Login"), {
+            const response = await axios.post(devMode2("render" , "Login"), {
                 username: username.trim(),
                 password: password.trim(),
             })
