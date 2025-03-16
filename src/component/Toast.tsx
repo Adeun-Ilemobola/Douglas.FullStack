@@ -1,37 +1,21 @@
 import React from 'react';
 
-function Toast({value , type = "default"}:{value:string , type:"danger"|"success"|"warning"|"default"}) {
-   if (type === 'danger') {
-       return (
-           <div className="alert alert-danger fade show position-fixed top-0 start-0 m-3" role="alert">
-               {value}
-           </div>
-       )
-   }
+function Toast({ value, type = "default" }: { value: string; type: "danger" | "success" | "warning" | "default" }) {
+    const baseClass = "alert fade show position-fixed top-0 end-0 m-3";
+    const zIndexStyle = { zIndex: 9999 };
 
-   if (type === 'success') {
-       return (
-           <div className="alert alert-success fade show position-fixed top-0 start-0 m-3" role="alert">
-               {value}
-           </div>
-       )
-   }
+    const typeClass = {
+        danger: "alert-danger",
+        success: "alert-success",
+        warning: "alert-warning",
+        default: "alert-info",
+    }[type];
 
-   if (type === 'warning') {
-       return (
-           <div className="alert alert-warning fade show position-fixed top-0 start-0 m-3" role="alert">
-               {value}
-           </div>
-       )
-   }
-
-   if (type === 'default') {
-       return (
-           <div className="alert alert-info fade show position-fixed top-0 start-0 m-3" role="alert">
-               {value}
-           </div>
-       )
-   }
+    return (
+        <div className={`${baseClass} ${typeClass}`} role="alert" style={zIndexStyle}>
+            {value}
+        </div>
+    );
 }
 
 export default Toast;

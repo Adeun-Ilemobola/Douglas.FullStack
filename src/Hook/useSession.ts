@@ -58,11 +58,14 @@ export function useSession() {
 
 
         } catch (e) {
-           const {response} = e as AxiosError<{ error: string |null, data: object |null}>
+            if (axios.isAxiosError(e)) {
+                const {response} = e as AxiosError<{ error: string |null, data: object |null}>
 
-            console.log(response?.data)
-            setSession(null);
-            navigate("/Login");
+                console.log(response?.data)
+                setSession(null);
+                navigate("/Login");
+
+            }
 
         } finally {
             setIsLoading(false);
