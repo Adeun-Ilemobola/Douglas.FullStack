@@ -6,6 +6,14 @@ import Input from "../component/UI/Input";
 import axios , {AxiosError} from "axios";
 import {devMode} from "../lib/db";
 import Button from "../component/UI/Button";
+import Toast from "../component/Toast";
+
+type Meg ={
+    message: string,
+    show: boolean,
+    type:"danger"|"success"|"warning"|"default"
+
+}
 // {username:string , password:string , email:string , newPassword:string , oldPassword:string , passwordConfirm:string , isNewpassword:boolean}
 const Settings = () => {
     const URL = devMode("render")
@@ -21,8 +29,11 @@ const Settings = () => {
 
     });
     const [onChange , setChange] = useState(false)
-    const [error, setError] = useState("")
-    const [success, setSuccess] = useState("")
+    const [message, setMessage] = useState<Meg>({
+        message: "",
+        type:"default",
+        show: false
+    });
     const [loading, setLoading] = useState(false)
 
     const {username , id} = useParams();
@@ -43,26 +54,52 @@ const Settings = () => {
         path: ['passwordConfirm'],
     });
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setError("")
-        },1500)
+        const get = async ()=>{
+            try {
+                setLoading(true);
+                const {data} = await axios.get(`${URL}/${id}`);
+                if (data){
+                    setFormIfo(prevState =>({
+                        ...prevState,
+                        username: data.username,
+                        email: data.email
+                    }) )
+                }
 
-        return () => {clearTimeout(timer)}
+            }catch (e) {
+                if (axios.isAxiosError(e)){
+                    const {response} = e as AxiosError<{ error: string |null, data: object |null}>
+                    setMessage({
+                        message:response?.data.error || "something went wrong",
+                        type:"danger",
+                        show: true
+                    })
+                }
 
-    },[error])
+            }finally {
+                setLoading(false);
+            }
+        }
+        get();
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setSuccess("")
+            setMessage({
+                message:"",
+                show:false,
+                type:"default"
+            })
         },2000)
 
         return () => {clearTimeout(timer)}
 
-    },[success])
+    },[message.show])
 
 
 
-    if (isLoading) {
+
+    if (isLoading || loading) {
         return (<div className={"LoadingPage"}>Loading...</div>)
     }
 
@@ -82,12 +119,16 @@ const Settings = () => {
         if (onChange) {
             const validForm = Z_FormInfo.safeParse(formInfo)
             if (validForm.error) {
-                setError(validForm.error.errors[0].message)
+                setMessage({
+                    message:validForm.error.errors[0].message,
+                    type:"danger",
+                    show: true
+                })
 
                 return;
             }
             if (validForm.data){
-                setError("");
+
                 try {
                     const {data} = await axios.put(
                         `${URL}user/${id}`,
@@ -98,17 +139,34 @@ const Settings = () => {
 
                     if (data){
                         console.log(data)
-                        setSuccess(" successfully updated account")
+                        setMessage({
+                            message:"successfully updated account",
+                            type:"default",
+                            show: true
+                        })
+
                     }
 
                 }catch(e){
                     const {response} = e as AxiosError<{error:string |null ,data:object |null }>;
                     if (response && response.data.error ){
-                        setError(response.data.error)
+                        setMessage({
+                            message:response.data.error,
+                            type:"danger",
+                            show: true
+                        })
+
+
                         console.log(response.data.error)
 
                     }else {
-                        setError(" something went wrong")
+
+
+                        setMessage({
+                            message:"something went wrong",
+                            type:"danger",
+                            show: true
+                        })
 
                     }
                 }
@@ -125,9 +183,8 @@ const Settings = () => {
 
     return (
         <div className='ROOTCONPONENT'>
-            {error && <div className="alert alert-danger position-absolute top-0 start-0 m-3" role="alert">
-                {error}
-            </div>}
+            {message.show && <Toast type={message.type} value={message.message} />}
+
 
 
 
