@@ -40,9 +40,9 @@ const Settings = () => {
     const Z_FormInfo = z.object({
         username: z.string().min(3, 'Username must be at least 3 characters long').max(50, 'Username must be under 50 characters'),
         email: z.string().email('Invalid email address'),
-        newPassword: z.string().min(8, 'New password must be at least 8 characters long').optional(),
-        oldPassword: z.string().min(8, 'Old password must be at least 8 characters long').optional(),
-        passwordConfirm: z.string().optional(),
+        newPassword: z.string().min(8, 'New password must be at least 8 characters long').optional().or(z.literal('')),
+        oldPassword: z.string().min(5, 'Old password must be at least 8 characters long').optional().or(z.literal('')),
+        passwordConfirm: z.string().optional().or(z.literal('')),
         isNewpassword: z.boolean(),
     }).refine((data) => {
         if (data.isNewpassword) {
@@ -57,8 +57,10 @@ const Settings = () => {
         const get = async ()=>{
             try {
                 setLoading(true);
-                const {data} = await axios.get(devMode2("render" ,`user/${id}`));
+                const {data: response} = await axios.get(devMode2("render" ,`user/${id}`));
+                const { data} = response;
                 if (data){
+                    console.log(data)
                     setFormIfo(prevState =>({
                         ...prevState,
                         username: data.username,
@@ -97,19 +99,27 @@ const Settings = () => {
     },[message.show])
 
 
-
-
-    if (isLoading || loading) {
+    if (isLoading ) {
         return (<div className={"LoadingPage"}>Loading...</div>)
     }
 
     function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
         const {value , name} = e.target;
         if (name === "newPassword" || name === "passwordConfirm" || name === "oldPassword") {
-            if (value.length >0){
-                setFormIfo(prevState => ({...prevState, isNewpassword: true }));
 
-            }
+            setFormIfo(prevState => {
+                const updatedState = { ...prevState, [name]: value };
+
+                if (name === "newPassword" || name === "passwordConfirm" || name === "oldPassword") {
+                    updatedState.isNewpassword = !!(
+                        updatedState.newPassword || updatedState.passwordConfirm || updatedState.oldPassword
+                    );
+                }
+
+                return updatedState;
+            });
+
+
         }
         setFormIfo(prevState => ({...prevState, [name]: value }));
         setChange(true)
@@ -124,14 +134,14 @@ const Settings = () => {
                     type:"danger",
                     show: true
                 })
-
+                setLoading(false);
                 return;
             }
             if (validForm.data){
 
                 try {
                     const {data} = await axios.put(
-                        `${URL}user/${id}`,
+                        devMode2("render" ,`user/${id}`),
                         {
                             ...validForm.data
                         }
@@ -173,6 +183,13 @@ const Settings = () => {
 
             }
 
+        }else {
+            setMessage({
+                message:" change has not been made",
+                type:"danger",
+                show: true
+
+            })
         }
 
         setLoading(false);
@@ -195,11 +212,11 @@ const Settings = () => {
                     setLoading(true)
                     Send()
                 }}>
-                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="username" name="username" onChange={handleInput} />
-                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="email" name="email" onChange={handleInput} />
-                    <Input disabled={loading} className={"w-55"}    showLabel={true} LabelI="newPassword" name="newPassword" onChange={handleInput} isPassword={true} />
-                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="oldPassword" name="oldPassword" onChange={handleInput} isPassword={true} />
-                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="username" name="username" value={formInfo.username} onChange={handleInput} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="email" name="email" value={formInfo.email} onChange={handleInput} />
+                    <Input disabled={loading} className={"w-55"}    showLabel={true} LabelI="newPassword" name="newPassword" value={formInfo.newPassword} onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="oldPassword" name="oldPassword" value={formInfo.oldPassword} onChange={handleInput} isPassword={true} />
+                    <Input disabled={loading}  className={"w-55"}   showLabel={true} LabelI="passwordConfirm" name="passwordConfirm" value={formInfo.passwordConfirm} onChange={handleInput} isPassword={true} />
 
                     <Button disabled={loading} type={"submit"}>{loading ? "loading" : "update"} </Button>
 
