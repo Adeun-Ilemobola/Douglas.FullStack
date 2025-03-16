@@ -2,11 +2,17 @@ import React, {useState} from 'react';
 import {useSession} from "../Hook/useSession";
 import Input from "../component/UI/Input";
 import Button from "../component/UI/Button";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+import Toast from "../component/Toast";
+import { useNavigate,} from 'react-router-dom';
+
+
 
 function Register() {
+    const navigate = useNavigate();
     useSession();
     const [signStart , setSignStart] = useState<boolean>(false);
+    const [error, setError] = useState("");
     const [loginInfo, setLoginInfo] = useState({
         username: "",
         password: "",
@@ -15,6 +21,7 @@ function Register() {
     })
     return (
         <div className={"ROOTX Register"}>
+            {error && <Toast type={"danger"} value={error} />}
             <Input
                 LabelI={"Username"}
                 showLabel={true}
@@ -80,8 +87,11 @@ function Register() {
 
                          }).then((data)=>{
                             console.log(data);
+                            navigate("/login");
                         }).catch((err)=>{
-                            console.log(err);
+                             const {response} = err as AxiosError<{ error: string |null, data: object |null}>
+                             console.log(response?.data.error);
+                             setError(response?.data.error||"");
                         })
 
 

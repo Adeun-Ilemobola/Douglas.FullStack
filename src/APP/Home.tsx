@@ -9,6 +9,7 @@ import Input from "../component/UI/Input";
 import BoxCard from "../component/Box";
 import {devMode} from "../lib/db";
 import { DateTime } from "luxon";
+import Toast from "../component/Toast";
 
 
 
@@ -26,11 +27,12 @@ type Folder = {
 
 }
 
-// type changeDispatcher = { Structure
-//     changeOcr: boolean,
-//     userNote: { method: "add" | "delete" | "update", data: Note }[],
-//     userFolder: { method: "add" | "delete" | "update", data: Folder }[],
-// }
+type Meg ={
+    message: string,
+    show: boolean,
+    type:"danger"|"success"|"warning"|"default"
+
+}
 
 
 // API access == https://nodevap.onrender.com/api/
@@ -45,6 +47,11 @@ export default function Home() {
     const {isLoading, session, Logout} = useSession();
     const [openDialogFolder, setOpenDialogFolder] = useState(false)
     const [openDialogNote, setOpenDialogNote] = useState(false)
+    const [message, setMessage] = useState<Meg>({
+        message: "",
+        type:"default",
+        show: false
+    });
 
     const [Notes, setNotes] = useState<Note[]>([]);
     const [Loading, setLoading] = useState<boolean>(false);
@@ -193,6 +200,11 @@ export default function Home() {
                 selectedFolder: null,
             })
             setOpenDialogNote(false)
+            setMessage({
+                message:"successfully added a note",
+                show:true,
+                type:"default"
+            })
 
 
         } catch (err) {
@@ -225,6 +237,11 @@ export default function Home() {
                 selectedFolder: null,
             })
             setOpenDialogFolder(false)
+            setMessage({
+                message:"successfully added a folder",
+                show:true,
+                type:"default"
+            })
 
 
         } catch (err) {
@@ -327,8 +344,15 @@ export default function Home() {
                     alert(error);
                 }
 
+                setMessage({
+                    message:"successfully deleted a note",
+                    show:true,
+                    type:"default"
+                })
+
             }
             await Refresh();
+
             return;
 
 
@@ -344,6 +368,11 @@ export default function Home() {
                 if (error) {
                     alert(error);
                 }
+                setMessage({
+                    message:"successfully deleted a folder",
+                    show:true,
+                    type:"default"
+                })
 
             }
             await Refresh();
@@ -353,6 +382,19 @@ export default function Home() {
 
 
     }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage({
+                message:"",
+                show:false,
+                type:"default"
+            })
+        },2000)
+
+        return () => {clearTimeout(timer)}
+
+    },[message.show])
 
     useEffect(() => {
         (async () => {
@@ -391,8 +433,10 @@ export default function Home() {
     }
 
 
+
     return (
         <div className='ROOTCONPONENT'>
+            {message.show && <Toast type={message.type} value={message.message} />}
             <DialogPopover isOpen={openDialogFolder} onClose={() => setOpenDialogFolder(false)}>
                 <Input showLabel={true} LabelI={"name"} value={newItem.name}
                        onChange={(e) => handleIput(e.target.value)}/>

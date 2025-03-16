@@ -4,6 +4,7 @@ import Input from "../component/UI/Input";
 import Button from "../component/UI/Button";
 import {useSession} from "../Hook/useSession";
 import {Link} from "react-router-dom";
+import Toast from "../component/Toast";
 function Login() {
     // const stack = [...onther];
     // while (stack > 0 ){
@@ -38,9 +39,7 @@ function Login() {
     return (
         <div className='ROOTX LOGIN'>
 
-            {error && <div className="alert alert-danger position-absolute top-0 start-100 m-3" role="alert">
-                {error}
-            </div>}
+            {error && <Toast type={"danger"} value={error} />}
 
                 <Input
                     LabelI={"Username"}
