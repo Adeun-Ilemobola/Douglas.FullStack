@@ -4,7 +4,7 @@ import z from "zod"
 import {useSession} from "../Hook/useSession";
 import Input from "../component/UI/Input";
 import axios , {AxiosError} from "axios";
-import {devMode} from "../lib/db";
+import {devMode2} from "../lib/db";
 import Button from "../component/UI/Button";
 import Toast from "../component/Toast";
 
@@ -16,7 +16,7 @@ type Meg ={
 }
 // {username:string , password:string , email:string , newPassword:string , oldPassword:string , passwordConfirm:string , isNewpassword:boolean}
 const Settings = () => {
-    const URL = devMode("render")
+
 
     const {isLoading} = useSession();
     const [formInfo  , setFormIfo] = useState({
@@ -57,7 +57,7 @@ const Settings = () => {
         const get = async ()=>{
             try {
                 setLoading(true);
-                const {data} = await axios.get(`${URL}/${id}`);
+                const {data} = await axios.get(devMode2("render" ,`user/${id}`));
                 if (data){
                     setFormIfo(prevState =>({
                         ...prevState,
