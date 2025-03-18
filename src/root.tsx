@@ -19,11 +19,7 @@ export default function Root() {
                   <Route path="/Login" element={<Login/>} />
                   <Route path={"/Register"} element={<Register/>}/>
                   <Route path={"/Settings/:username/:id"} element={<Settings/>}/>
-                  <Route path="*" element={<NotFound/>} />
-
-
-
-
+                  <Route path="/*" element={<NotFound/>} />
               </Routes>
          </Router>
      )
